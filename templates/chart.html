@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ monitor.name }} - 歷史狀態</h2>
+<canvas id="statusChart" width="800" height="400"></canvas>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- 初始化圖表 -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const ctx = document.getElementById('statusChart').getContext('2d');
+  const labels = {{ labels|tojson }};
+  const data = {{ data|tojson }};
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Up/Down',
+        data: data,
+        fill: false,
+        borderColor: 'green',
+        tension: 0.1,
+        borderWidth: 2,
+        pointRadius: 3,
+        pointBackgroundColor: 'green'
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+            callback: function(value) {
+              return value === 1 ? 'UP' : 'DOWN';
+            }
+          }
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return context.parsed.y === 1 ? 'UP' : 'DOWN';
+            }
+          }
+        }
+      }
+    }
+  });
+});
+</script>
+{% endblock %}

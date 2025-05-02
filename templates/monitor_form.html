@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ '編輯' if monitor else '新增' }} 監控</h2>
+<form method="post">
+  <div class="form-group">
+    <label>名稱</label>
+    <input class="form-control" name="name" value="{{ monitor.name if monitor }}" required>
+  </div>
+  <div class="form-group">
+    <label>類型</label>
+    <select class="form-control" name="type">
+      <option value="ping" {% if monitor and monitor.type=='ping' %}selected{% endif %}>Ping</option>
+      <option value="http" {% if monitor and monitor.type=='http' %}selected{% endif %}>HTTP</option>
+      <option value="dns" {% if monitor and monitor.type=='dns' %}selected{% endif %}>DNS</option>
+      <option value="tcp" {% if monitor and monitor.type=='tcp' %}selected{% endif %}>TCP</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>目標 (URL / IP / Domain)</label>
+    <input class="form-control" name="target" value="{{ monitor.target if monitor }}" required>
+  </div>
+  <div class="form-group">
+    <label>Port (TCP only)</label>
+    <input class="form-control" name="port" value="{{ monitor.port if monitor }}">
+  </div>
+  <div class="form-group">
+    <label>關鍵字 (HTTP only)</label>
+    <input class="form-control" name="keyword" value="{{ monitor.keyword if monitor }}">
+  </div>
+  <div class="form-group">
+    <label>頻率 (秒, 最少 20)</label>
+    <input type="number" class="form-control" name="frequency" min="20" value="{{ monitor.frequency if monitor else 60 }}" required>
+  </div>
+  <button class="btn btn-primary">送出</button>
+</form>
+{% endblock %}

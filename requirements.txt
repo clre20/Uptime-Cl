@@ -1,0 +1,9 @@
+Flask
+Flask-Login
+Flask-Migrate
+Flask-SQLAlchemy
+APScheduler
+requests
+icmplib
+Flask-Bcrypt
+apscheduler

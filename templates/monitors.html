@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>監控列表</h2>
+<a class="btn btn-success mb-2" href="{{ url_for('monitor_form') }}">新增監控</a>
+<table class="table table-striped">
+  <thead><tr><th>名稱</th><th>類型</th><th>目標</th><th>頻率(s)</th><th>狀態</th><th>操作</th></tr></thead>
+  <tbody>
+    {% for m in monitors %}
+    <tr>
+      <td>{{ m.name }}</td>
+      <td>{{ m.type }}</td>
+      <td>{{ m.target }}{% if m.port %}:{{ m.port }}{% endif %}</td>
+      <td>{{ m.frequency }}</td>
+      <td>{{ 'Up' if m.last_status else 'Down' }}</td>
+      <td>
+        <a class="btn btn-sm btn-primary" href="{{ url_for('monitor_form', id=m.id) }}">編輯</a>
+        <form style="display:inline;" method="post" action="{{ url_for('monitor_delete', monitor_id=m.id) }}">
+          <button class="btn btn-sm btn-danger">刪除</button>
+        </form>
+        <a class="btn btn-sm btn-info" href="{{ url_for('monitor_chart', id=m.id) }}">圖表</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
